@@ -11,24 +11,30 @@
 #pragma once
 #include <JuceHeader.h>
 
+
+
 //#include <JuceHeader.h>
 
 class Panning{
 public:
     
-    Panning();
+    Panning(juce::AudioProcessor* inAudioProcessor);
+    
+    ~Panning();
     
     /* */
-    void panAudioBuffer(juce::AudioBuffer<float>& buffer, float panPosition, int numBuses,std::vector<juce::AudioBuffer<float>>& busBuffers);
-    
-    /* */
-    void createBusBuffers(juce::AudioBuffer<float>& buffer, int numBuses, std::vector<juce::AudioBuffer<float>>& busBuffers);
-
+    void panAudioBuffer(juce::AudioBuffer<float>& buffer, float panPosition, int numBuses);
 
     
+    static const size_t MAX_NUM_BUSES = 32;
+
+
 private:
-     
-
+    /* */
+    void updateBusBuffers(juce::AudioBuffer<float>& buffer, int numBuses);
+    
+    juce::AudioProcessor* mAudioProcessor;
+    std::array<juce::AudioBuffer<float>, MAX_NUM_BUSES> mBusBuffers;
 
     
 };
