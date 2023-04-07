@@ -83,7 +83,6 @@ private:
     
     float phase = 0;
 
-    Panning panning;
     juce::AudioBuffer<float> audioBuffer;
     std::unique_ptr<Panning> mPanning;
     std::vector<juce::AudioBuffer<float>> mBusBuffers;
@@ -96,12 +95,11 @@ private:
     juce::AudioParameterFloat* mGain;
 
     
-    ParameterManager mParameterManager;
+    std::unique_ptr<ParameterManager> mParameterManager;
 
 //    Delay mDelayL;
 //    Delay mDelayR;
     
-    Panning  panAudioBuffer;
     
 
 

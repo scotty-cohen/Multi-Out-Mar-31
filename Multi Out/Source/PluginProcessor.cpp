@@ -52,12 +52,9 @@ void Week3SineGeneratorAudioProcessor::processBlock(juce::AudioBuffer<float>& bu
 //
     
     // Get the panning position from the parameters
-    float panPosition = mParameterManager.getTreeState().getParameterAsValue(ParameterIDStrings[AppParameterID::Size]).getValue();
-    // Create 4 busses for panning
-    std::vector<juce::AudioBuffer<float>> busBuffers(4);
-    panning.createBusBuffers(buffer, 4, busBuffers);
+    float panPosition = mParameterManager->getTreeState().getParameterAsValue(ParameterIDStrings[AppParameterID::Size]).getValue();
     // Pan the audio buffer
-//    panning.panAudioBuffer(buffer, panPosition, 4, busBuffers);
+    mPanning->panAudioBuffer(buffer, panPosition, 4);
 
 //    for (int busIndex = 0; busIndex < busBuffers.size(); ++busIndex)
 //    {
@@ -128,12 +125,12 @@ Week3SineGeneratorAudioProcessor::Week3SineGeneratorAudioProcessor()
                        .withOutput ("Bus #3",  juce::AudioChannelSet::stereo(), true)
                        .withOutput ("Bus #4",  juce::AudioChannelSet::stereo(), true)
 #endif
-                       ),
+                       )
 
-mParameterManager(this),
-mPanning(std::make_unique<Panning>())
+
 {
-
+    mParameterManager = std::make_unique<ParameterManager>(this);
+    mPanning = std::make_unique<Panning>(this);
 }
 
 #endif
@@ -277,7 +274,7 @@ void Week3SineGeneratorAudioProcessor::setStateInformation (const void* data, in
 
 ParameterManager* Week3SineGeneratorAudioProcessor::getParameterManager()
 {
-    return &mParameterManager;
+    return mParameterManager.get();
 }
 
 //==============================================================================
