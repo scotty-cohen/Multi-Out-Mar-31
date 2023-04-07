@@ -29,13 +29,6 @@ Week3SineGeneratorAudioProcessorEditor::Week3SineGeneratorAudioProcessorEditor (
     }
    
 
-    
-    
-    
-    
-    
-    
-    
 
 //    auto gain_range = float_param -> getNormalisableRange();
     addAndMakeVisible (mGain);

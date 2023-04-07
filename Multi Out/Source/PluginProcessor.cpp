@@ -14,8 +14,8 @@
 //==============================================================================
 void Week3SineGeneratorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-//    mDelayL.initialize(sampleRate, samplesPerBlock);
-//    mDelayR.initialize(sampleRate, samplesPerBlock);
+    mDelayL.initialize(sampleRate, samplesPerBlock);
+    mDelayR.initialize(sampleRate, samplesPerBlock);
 //    
 }
 
@@ -43,7 +43,7 @@ void Week3SineGeneratorAudioProcessor::processBlock(juce::AudioBuffer<float>& bu
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         
         
-        //buffer.clear (i, 0, buffer.getNumSamples());
+
 
 
     
@@ -56,25 +56,6 @@ void Week3SineGeneratorAudioProcessor::processBlock(juce::AudioBuffer<float>& bu
     // Pan the audio buffer
     mPanning->panAudioBuffer(buffer, panPosition, 4);
 
-//    for (int busIndex = 0; busIndex < busBuffers.size(); ++busIndex)
-//    {
-//        busBuffers[busIndex].clear();
-//        for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-//        {
-//            const float* channelData = buffer.getReadPointer(channel);
-//            busBuffers[busIndex].addFrom(channel, 0, channelData, buffer.getNumSamples() , 0.5f);
-//        }
-//    }
-    
-//    for (int busIndex = 0; busIndex < busBuffers.size(); ++busIndex)
-//    {
-//        busBuffers[busIndex].applyGain(0.7f); // adjust gain as necessary
-//        getBus(busIndex + 1)->copyFrom(0, 0, busBuffers[busIndex], 0, 0, buffer.getNumSamples());
-//        getBus(busIndex + 1)->copyFrom(1, 0, busBuffers[busIndex], 1, 0, buffer.getNumSamples());
-//    }
-
-    
-
     //ALL THE COMMENTED OUT CODE BETWEEN THE JASSERTS CAUSES.... JASSERTS WHEN THE PLUGIN IS INITIALIZED
         
 //        jassert(buffer.getNumChannels() == getTotalNumOutputChannels());
@@ -84,21 +65,21 @@ void Week3SineGeneratorAudioProcessor::processBlock(juce::AudioBuffer<float>& bu
     jassert(buffer.getNumChannels() == getTotalNumOutputChannels());
     
     
-//    mDelayL.setParameters(mParameterManager.getCurrentParameterValue(AppParameterID::Time),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Feedback),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Mix),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Lowpass),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Highpass));
+    mDelayL.setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
+//
+    mDelayR.setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
+                          mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
 ////
-//    mDelayR.setParameters(mParameterManager.getCurrentParameterValue(AppParameterID::Time),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Feedback),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Mix),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Lowpass),
-//                          mParameterManager.getCurrentParameterValue(AppParameterID::Highpass));
 ////
-////
-////        mDelayL.processBlock(buffer.getWritePointer(0), buffer.getNumSamples());
-////        mDelayR.processBlock(buffer.getWritePointer(1), buffer.getNumSamples());
+        mDelayL.processBlock(buffer.getWritePointer(0), buffer.getNumSamples());
+        mDelayR.processBlock(buffer.getWritePointer(1), buffer.getNumSamples());
 
 
 

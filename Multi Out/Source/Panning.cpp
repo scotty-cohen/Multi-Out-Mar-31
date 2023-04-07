@@ -39,8 +39,11 @@ void Panning::panAudioBuffer(juce::AudioBuffer<float>& buffer, float panPosition
     
     
     for (int i = 0; i < numBuses; ++i) {
-        double levelL = juce::jlimit(0.0, 1.0, std::abs((homePositions[i] - sliderPosition + notch/2.0) / notch));
-        double levelR = juce::jlimit(0.0, 1.0, std::abs((homePositions[i] - sliderPosition + notch/2.0) / notch));
+        double levelL = juce::jlimit(0.0, 1.0, std::abs((homePositions[i] - sliderPosition) / notch));
+        double levelR = juce::jlimit(0.0, 1.0, std::abs((homePositions[i] - sliderPosition) / notch));
+        levelL = 1 - levelL;
+        levelR = 1 - levelR;
+        
         levelsL[i] = levelL;
         levelsR[i] = levelR;
     }

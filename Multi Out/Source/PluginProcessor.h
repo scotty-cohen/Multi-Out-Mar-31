@@ -97,8 +97,8 @@ private:
     
     std::unique_ptr<ParameterManager> mParameterManager;
 
-//    Delay mDelayL;
-//    Delay mDelayR;
+    Delay mDelayL;
+    Delay mDelayR;
     
     
 
