@@ -27,22 +27,14 @@ public:
     Week3SineGeneratorAudioProcessor();
     ~Week3SineGeneratorAudioProcessor() override;
     
-    
-    
     //==============================================================================
     void processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midi) override;
 
     /* */
-    
-    void setGain (float inGain);
-    
-    /* */
-    
-    float getGain ();
+    void setGain(float inGain);
     
     /* */
-    
-    
+    float getGain();
     
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -81,29 +73,14 @@ public:
     
 private:
     
-    float phase = 0;
-
-    juce::AudioBuffer<float> audioBuffer;
     std::unique_ptr<Panning> mPanning;
-    std::vector<juce::AudioBuffer<float>> mBusBuffers;
-    float panPosition = 0.5f;
-
-    //smoothing
-    juce::LinearSmoothedValue<float> mSmoothedGain;
-    juce::AudioParameterFloat* mGainParam;
-    //Declaring Pointer to mGain
-    juce::AudioParameterFloat* mGain;
-
+        
+    std::array<Delay, MAX_NUM_BUSES> mDelayL;
+    std::array<Delay, MAX_NUM_BUSES> mDelayR;
     
     std::unique_ptr<ParameterManager> mParameterManager;
-
-    Delay mDelayL;
-    Delay mDelayR;
     
-    
-
-
-
+    const int mNumBuses = 4;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Week3SineGeneratorAudioProcessor)

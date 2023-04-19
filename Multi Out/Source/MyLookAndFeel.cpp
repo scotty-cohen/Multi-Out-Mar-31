@@ -88,3 +88,36 @@ void MyLookAndFeel::drawRotarySlider (Graphics& g, int x, int y, int width, int 
 
 
 }
+
+//void drawLinearSlider(juce::Graphics& g, int x, int y, int width, int height,
+//                       float sliderPos, float minSliderPos, float maxSliderPos,
+//                       const juce::Slider::SliderStyle style, juce::Slider& slider)
+//{
+//    g.fillAll(Colours::transparentBlack);
+//
+//    if (style == juce::Slider::LinearHorizontal || style == juce::Slider::LinearVertical)
+//    {
+//        auto sliderBounds = slider.getLocalBounds();
+//        auto centerX = sliderBounds.getCentreX();
+//        auto centerY = sliderBounds.getCentreY();
+//        auto sliderRadius = jmin(sliderBounds.getWidth(), sliderBounds.getHeight()) * 0.25f;
+//
+//        juce::Path p;
+//        if (style == juce::Slider::LinearHorizontal)
+//            p.addRectangle(0, 0, sliderPos * sliderBounds.getWidth(), sliderBounds.getHeight());
+//        else
+//            p.addRectangle(0, sliderBounds.getHeight() - sliderPos * sliderBounds.getHeight(),
+//                           sliderBounds.getWidth(), sliderPos * sliderBounds.getHeight());
+//
+//        g.setColour(slider.findColour(juce::Slider::trackColourId));
+//        g.fillPath(p, p.getTransformToScaleToFit(sliderBounds.toFloat(), true));
+//
+//        g.setColour(slider.findColour(juce::Slider::thumbColourId));
+//        g.fillEllipse(centerX + sliderPos * (sliderBounds.getWidth() - sliderRadius * 2.0f) - sliderRadius,
+//                      centerY - sliderRadius,
+//                      sliderRadius * 2.0f, sliderRadius * 2.0f);
+//    }
+//}
+
+
+

@@ -10,85 +10,51 @@
 #include "PluginEditor.h"
 
 
-
 //==============================================================================
 void Week3SineGeneratorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    mDelayL.initialize(sampleRate, samplesPerBlock);
-    mDelayR.initialize(sampleRate, samplesPerBlock);
-//    
+    for (int i = 0; i < mDelayL.size(); i++) {
+        mDelayL[i].initialize(sampleRate, samplesPerBlock);
+    }
+    
+    for (int i = 0; i < mDelayR.size(); i++) {
+        mDelayR[i].initialize(sampleRate, samplesPerBlock);
+    }
 }
 
 
 void Week3SineGeneratorAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
-    /* boiler plate stuff to not touch */
-
-//    jassert(buffer.getNumChannels() == getTotalNumOutputChannels() || buffer.getNumChannels() == 2);
-    
-    juce::ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
-    
-//    jassert(buffer.getNumChannels() == getTotalNumOutputChannels() || buffer.getNumChannels() == 2);
-    
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    
-    
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        
-        
-
-
-
-    
-    jassert(buffer.getNumChannels() == getTotalNumOutputChannels() || buffer.getNumChannels() == 2);
-
-//
-    
-    // Get the panning position from the parameters
-    float panPosition = mParameterManager->getTreeState().getParameterAsValue(ParameterIDStrings[AppParameterID::Size]).getValue();
-    // Pan the audio buffer
-    mPanning->panAudioBuffer(buffer, panPosition, 4);
-
-    //ALL THE COMMENTED OUT CODE BETWEEN THE JASSERTS CAUSES.... JASSERTS WHEN THE PLUGIN IS INITIALIZED
-        
-//        jassert(buffer.getNumChannels() == getTotalNumOutputChannels());
-//
-
-    
     jassert(buffer.getNumChannels() == getTotalNumOutputChannels());
+
+    /* boiler plate stuff to not touch */
+    juce::ScopedNoDenormals noDenormals;
     
+    float pan = mParameterManager->getTreeState().getParameterAsValue(ParameterIDStrings[AppParameterID::Pan]).getValue();
     
-    mDelayL.setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
-//
-    mDelayR.setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
-                          mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
-////
-////
-        mDelayL.processBlock(buffer.getWritePointer(0), buffer.getNumSamples());
-        mDelayR.processBlock(buffer.getWritePointer(1), buffer.getNumSamples());
+    mPanning->panAudioBuffer(buffer, pan, mNumBuses);
+    
+    for (int i = 0; i < mNumBuses; i++) {
+        
+        mDelayL[i].setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
 
-
-
-
+        mDelayR[i].setParameters(mParameterManager->getCurrentParameterValue(AppParameterID::Time),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Feedback),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Mix),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Lowpass),
+                                 mParameterManager->getCurrentParameterValue(AppParameterID::Highpass));
+        
+        auto bus = getBusBuffer(buffer, false, i + 1);
+        
+        mDelayL[i].processBlock(bus.getWritePointer(0), bus.getNumSamples());
+        mDelayR[i].processBlock(bus.getWritePointer(1), bus.getNumSamples());
+        
+    }
 }
-                          
-
-
-//
 
 //==============================================================================
 Week3SineGeneratorAudioProcessor::Week3SineGeneratorAudioProcessor()
@@ -238,7 +204,7 @@ void Week3SineGeneratorAudioProcessor::getStateInformation (juce::MemoryBlock& d
 //    auto state = mParameterState.copyState();
 //    std::unique_ptr<juce::XmlElement> xml (state.createXml());
 //    copyXmlToBinary (*xml, destData);
-//    
+//
     
 
 }

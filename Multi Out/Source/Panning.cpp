@@ -21,6 +21,7 @@ Panning::~Panning() = default;
 void Panning::panAudioBuffer(juce::AudioBuffer<float>& buffer, float panPosition, int numBuses)
 {
     updateBusBuffers(buffer, numBuses);
+    
     //linear panning algorythm for gain knob
     //the width of a 'notch' in the slider
     auto notch = 1.0/numBuses;
@@ -31,9 +32,9 @@ void Panning::panAudioBuffer(juce::AudioBuffer<float>& buffer, float panPosition
         homePositions[i] = notch * i;
     }
 
-//    //normalized slider position (0 - 1)
+    //normalized slider position (0 - 1)
     auto sliderPosition = panPosition;
-//
+
     std::vector<double> levelsL(numBuses);
     std::vector<double> levelsR(numBuses);
     
@@ -69,6 +70,7 @@ void Panning::updateBusBuffers(juce::AudioBuffer<float>& buffer, int numBuses)
 {
     // Create bus buffers with the same number of channels as the input buffer (assuming stereo)
     jassert(numBuses <= MAX_NUM_BUSES);
+    
     for (int i = 0; i < numBuses; ++i) {
         mBusBuffers[i] = mAudioProcessor->getBusBuffer(buffer, false, i + 1);
     }

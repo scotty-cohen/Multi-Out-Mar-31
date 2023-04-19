@@ -34,29 +34,12 @@ private:
     
     MyLookAndFeel mLookAndFeel;
     
-    
     //Slider Container
     juce::OwnedArray<SliderContainer> mSliderContainers;
     
     
-    //Rotary Gain/Position Slider
-    juce::Slider mGain;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mGainAttachment;
-//
-//
-   //Buttons
-    juce::TextButton dToggle {"On/Off"};
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> dToggleAttachment;
-
- //Combobox For configuration
-    juce::ComboBox mComboBox;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> mComboBoxAttachment;
-    
     juce::FlexBox mFlexbox;
-
+    Week3SineGeneratorAudioProcessor& audioProcessor;
     
-  Week3SineGeneratorAudioProcessor& audioProcessor;
-    
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Week3SineGeneratorAudioProcessorEditor)
 };
